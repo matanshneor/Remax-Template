@@ -752,7 +752,10 @@
     // אין visibility:hidden / opacity:0 — אלה גורמים ל-html2canvas לרנדר הכל לבן.
     wrapper.style.cssText = 'position:absolute;top:9999px;left:0;width:540px;overflow:visible;z-index:-1;pointer-events:none;';
     const clone = adEl.cloneNode(true);
-    clone.style.cssText = 'transform:none;position:relative;width:540px;';
+    // לא משתמשים ב-cssText כי הוא מוחק את כל ה-inline styles הקיימים (כולל direction:rtl)
+    clone.style.transform = 'none';
+    clone.style.position = 'relative';
+    clone.style.width = '540px';
     clone.removeAttribute('id');
     wrapper.appendChild(clone);
     document.body.appendChild(wrapper);
