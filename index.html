@@ -758,13 +758,11 @@
     document.body.appendChild(wrapper);
 
     // ממתינים שה-browser יחשב layout על ה-clone
-    await new Promise(r => requestAnimationFrame(r));
-    await new Promise(r => requestAnimationFrame(r));
-    await new Promise(r => setTimeout(r, 60));
+    await new Promise(r => setTimeout(r, 80));
 
     try {
       // מיקום תמונת משה — מה-CLONE (שיש לו layout תקין ו-position:relative)
-      const cloneMosheImg = clone.querySelector('[alt="משה שניאור"]') || clone.querySelector('img[style*="object-fit:contain"]');
+      const cloneMosheImg = clone.querySelector('#moshe-img');
       const cloneMosheContainer = cloneMosheImg ? cloneMosheImg.parentElement : null;
 
       function offsetRelativeTo(el, ancestor) {
@@ -808,7 +806,7 @@
           });
 
           // הסתר משה ב-clone — נצייר אותו ידנית מהמקור
-          const clonedMoshe = el.querySelector('[alt="משה שניאור"]') || el.querySelector('img[style*="object-fit:contain"]');
+          const clonedMoshe = el.querySelector('#moshe-img');
           if (clonedMoshe) clonedMoshe.style.opacity = '0';
         }
       });
@@ -866,7 +864,6 @@
 
     } catch (err) {
       msg.textContent = '❌ שגיאה: ' + (err && err.message ? err.message : String(err));
-      console.error(err);
     } finally {
       if (wrapper.parentNode) document.body.removeChild(wrapper);
       btn.disabled = false;
@@ -879,6 +876,13 @@
   let _actionFileName = null;
   let _actionFile = null;
 
+  // cache — נשאל את ה-DOM פעם אחת בלבד
+  const _sheet        = document.getElementById('actionSheet');
+  const _sheetButtons = document.getElementById('actionSheetButtons');
+  const _sheetSaveImg = document.getElementById('actionSheetSaveImg');
+  const _sheetImg     = document.getElementById('actionSheetImg');
+  const _shareBtn     = document.getElementById('actionShareBtn');
+
   function openActionSheet(dataURL, fileName, shareFile, isMobile) {
     _actionDataURL = dataURL;
     _actionFileName = fileName;
@@ -889,38 +893,31 @@
       // לא בודקים canShare כי הוא מחזיר false ב-Chrome גם כשהשיתוף עובד.
       navigator.share({ files: [shareFile], title: 'מודעה RE/MAX' })
         .catch(e => {
-          if (e.name === 'AbortError') return; // המשתמש ביטל
-          // שיתוף נכשל — fallback: הצג תמונה ללחיצה ארוכה
+          if (e.name === 'AbortError') return;
           _showSaveImagePanel(dataURL);
         });
       return;
     }
 
-    const sheet = document.getElementById('actionSheet');
-    const buttons = document.getElementById('actionSheetButtons');
-    const saveImgPanel = document.getElementById('actionSheetSaveImg');
-
     // דסקטופ — כפתורים רגילים
-    buttons.style.display = 'block';
-    saveImgPanel.style.display = 'none';
-    document.getElementById('actionShareBtn').style.display = navigator.share ? '' : 'none';
-    sheet.style.display = 'flex';
-    requestAnimationFrame(() => sheet.classList.add('open'));
+    _sheetButtons.style.display = 'block';
+    _sheetSaveImg.style.display = 'none';
+    _shareBtn.style.display = navigator.share ? '' : 'none';
+    _sheet.style.display = 'flex';
+    requestAnimationFrame(() => _sheet.classList.add('open'));
   }
 
   function _showSaveImagePanel(dataURL) {
-    const sheet = document.getElementById('actionSheet');
-    document.getElementById('actionSheetButtons').style.display = 'none';
-    document.getElementById('actionSheetSaveImg').style.display = 'block';
-    document.getElementById('actionSheetImg').src = dataURL;
-    sheet.style.display = 'flex';
-    requestAnimationFrame(() => sheet.classList.add('open'));
+    _sheetButtons.style.display = 'none';
+    _sheetSaveImg.style.display = 'block';
+    _sheetImg.src = dataURL;
+    _sheet.style.display = 'flex';
+    requestAnimationFrame(() => _sheet.classList.add('open'));
   }
 
   function closeActionSheet() {
-    const sheet = document.getElementById('actionSheet');
-    sheet.classList.remove('open');
-    setTimeout(() => { sheet.style.display = 'none'; }, 250);
+    _sheet.classList.remove('open');
+    setTimeout(() => { _sheet.style.display = 'none'; }, 250);
   }
 
   async function actionDownload() {
@@ -952,7 +949,7 @@
     try {
       await navigator.share({ files: [_actionFile], title: 'מודעה RE/MAX' });
     } catch (e) {
-      if (e.name !== 'AbortError') console.warn('share error', e);
+      if (e.name !== 'AbortError') { /* share not supported */ }
     }
     closeActionSheet();
   }
