@@ -384,27 +384,47 @@
     padding:20px 16px 32px;transform:translateY(100%);transition:transform 0.25s cubic-bezier(0.4,0,0.2,1);"
     id="actionSheetPanel">
     <div style="width:40px;height:4px;background:#d1d5db;border-radius:2px;margin:0 auto 20px;"></div>
-    <div style="font-size:16px;font-weight:800;color:#1B3564;text-align:center;margin-bottom:18px;
-      font-family:'Manrope',sans-serif;">מה תרצה לעשות עם המודעה?</div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <button id="actionShareBtn" onclick="actionShare()"
-        style="display:flex;align-items:center;justify-content:center;gap:10px;
-          background:#1B3564;color:#fff;border:none;border-radius:12px;
-          padding:15px;font-size:16px;font-weight:700;cursor:pointer;
-          font-family:'Manrope',sans-serif;width:100%;">
-        <span class="material-symbols-outlined">share</span> שתף (WhatsApp, גלריה...)
-      </button>
-      <button onclick="actionDownload()"
-        style="display:flex;align-items:center;justify-content:center;gap:10px;
-          background:#CC0000;color:#fff;border:none;border-radius:12px;
-          padding:15px;font-size:16px;font-weight:700;cursor:pointer;
-          font-family:'Manrope',sans-serif;width:100%;">
-        <span class="material-symbols-outlined">download</span> הורד
-      </button>
+
+    <!-- מצב רגיל: כפתורים -->
+    <div id="actionSheetButtons">
+      <div style="font-size:16px;font-weight:800;color:#1B3564;text-align:center;margin-bottom:18px;
+        font-family:'Manrope',sans-serif;">מה תרצה לעשות עם המודעה?</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button id="actionShareBtn" onclick="actionShare()"
+          style="display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#1B3564;color:#fff;border:none;border-radius:12px;
+            padding:15px;font-size:16px;font-weight:700;cursor:pointer;
+            font-family:'Manrope',sans-serif;width:100%;">
+          <span class="material-symbols-outlined">share</span> שתף (WhatsApp, גלריה...)
+        </button>
+        <button onclick="actionDownload()"
+          style="display:flex;align-items:center;justify-content:center;gap:10px;
+            background:#CC0000;color:#fff;border:none;border-radius:12px;
+            padding:15px;font-size:16px;font-weight:700;cursor:pointer;
+            font-family:'Manrope',sans-serif;width:100%;">
+          <span class="material-symbols-outlined">download</span> הורד
+        </button>
+        <button onclick="closeActionSheet()"
+          style="background:transparent;color:#6b7280;border:none;padding:12px;
+            font-size:14px;cursor:pointer;font-family:'Manrope',sans-serif;width:100%;">
+          ביטול
+        </button>
+      </div>
+    </div>
+
+    <!-- מצב iOS Chrome: תמונה לשמירה ידנית -->
+    <div id="actionSheetSaveImg" style="display:none;">
+      <div style="font-size:15px;font-weight:800;color:#1B3564;text-align:center;margin-bottom:6px;
+        font-family:'Manrope',sans-serif;">החזק לחיצה ארוכה על התמונה → שמור לגלריה</div>
+      <div style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:14px;font-family:'Inter',sans-serif;">
+        לשיתוף ב-WhatsApp: שמור לגלריה ואז שלח מהגלריה
+      </div>
+      <img id="actionSheetImg" src="" alt="מודעה"
+        style="width:100%;border-radius:12px;display:block;margin-bottom:14px;"/>
       <button onclick="closeActionSheet()"
         style="background:transparent;color:#6b7280;border:none;padding:12px;
           font-size:14px;cursor:pointer;font-family:'Manrope',sans-serif;width:100%;">
-        ביטול
+        סגור
       </button>
     </div>
   </div>
@@ -864,26 +884,35 @@
     _actionFileName = fileName;
     _actionFile = shareFile;
 
-    // במובייל — תמיד נסה לפתוח את ה-native share sheet ישירות
-    // (גם Chrome iOS תומך ב-navigator.share עם files בגרסאות חדשות)
     if (isMobile && navigator.share) {
+      // נסה לשתף ישירות — עובד ב-Safari וב-Chrome iOS (שניהם WebKit).
+      // לא בודקים canShare כי הוא מחזיר false ב-Chrome גם כשהשיתוף עובד.
       navigator.share({ files: [shareFile], title: 'מודעה RE/MAX' })
         .catch(e => {
-          if (e.name === 'AbortError') return; // המשתמש ביטל — בסדר
-          // אם נכשל (דפדפן ישן) — נציג action sheet כ-fallback
-          const sheet = document.getElementById('actionSheet');
-          const shareBtn = document.getElementById('actionShareBtn');
-          shareBtn.style.display = 'none'; // אין share, רק הורד
-          sheet.style.display = 'flex';
-          requestAnimationFrame(() => sheet.classList.add('open'));
+          if (e.name === 'AbortError') return; // המשתמש ביטל
+          // שיתוף נכשל — fallback: הצג תמונה ללחיצה ארוכה
+          _showSaveImagePanel(dataURL);
         });
       return;
     }
 
-    // דסקטופ — action sheet עם הורד/שתף
     const sheet = document.getElementById('actionSheet');
-    const shareBtn = document.getElementById('actionShareBtn');
-    shareBtn.style.display = shareFile && navigator.share ? '' : 'none';
+    const buttons = document.getElementById('actionSheetButtons');
+    const saveImgPanel = document.getElementById('actionSheetSaveImg');
+
+    // דסקטופ — כפתורים רגילים
+    buttons.style.display = 'block';
+    saveImgPanel.style.display = 'none';
+    document.getElementById('actionShareBtn').style.display = navigator.share ? '' : 'none';
+    sheet.style.display = 'flex';
+    requestAnimationFrame(() => sheet.classList.add('open'));
+  }
+
+  function _showSaveImagePanel(dataURL) {
+    const sheet = document.getElementById('actionSheet');
+    document.getElementById('actionSheetButtons').style.display = 'none';
+    document.getElementById('actionSheetSaveImg').style.display = 'block';
+    document.getElementById('actionSheetImg').src = dataURL;
     sheet.style.display = 'flex';
     requestAnimationFrame(() => sheet.classList.add('open'));
   }
