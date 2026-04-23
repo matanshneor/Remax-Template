@@ -380,7 +380,7 @@
         <!-- Badge -->
         <!-- Badge — preview only; drawn manually on Canvas for download -->
         <div id="badgeWrap" style="display:none;position:absolute;bottom:-26px;left:0;right:0;z-index:10;text-align:center;direction:ltr;pointer-events:none;">
-          <div id="badgeText" style="display:inline-block;background:linear-gradient(135deg,#b80000 0%,#CC0000 60%,#d40000 100%);color:#fff;border:2px solid rgba(255,255,255,0.85);border-radius:6px;padding:0 44px;height:52px;line-height:52px;font-size:16px;font-weight:800;white-space:nowrap;font-family:'Manrope',sans-serif;letter-spacing:2.5px;box-shadow:0 8px 32px rgba(0,0,0,0.28),0 2px 8px rgba(0,0,0,0.18);direction:rtl;">עסקת השנה</div>
+          <div id="badgeText" style="display:inline-block;background:linear-gradient(135deg,#b80000 0%,#CC0000 60%,#d40000 100%);color:#fff;border:2px solid rgba(255,255,255,0.85);border-radius:6px;padding:0 44px;height:52px;line-height:52px;font-size:19px;font-weight:800;white-space:nowrap;font-family:'Manrope',sans-serif;letter-spacing:2.5px;box-shadow:0 8px 32px rgba(0,0,0,0.28),0 2px 8px rgba(0,0,0,0.18);direction:rtl;">עסקת השנה</div>
         </div>
       </div>
 
@@ -1086,7 +1086,7 @@
         ctx.save();
 
         // פונט + letter-spacing (Canvas API מודרני)
-        const fontSize = Math.round(16 * s);
+        const fontSize = Math.round(19 * s);
         ctx.font = `800 ${fontSize}px Manrope, sans-serif`;
         ctx.direction    = 'rtl';
         ctx.textAlign    = 'center';
