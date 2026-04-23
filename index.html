@@ -60,14 +60,6 @@
   .photo-slot.drag-over { outline: 2.5px dashed #CC0000; filter: brightness(1.2); }
   .photo-slot.has-image { cursor: grab; }
   .photo-slot.has-image.panning { cursor: grabbing; user-select: none; }
-  /* banner pill active */
-  .banner-btn.active {
-    background: #CC0000;
-    border-color: #CC0000;
-    color: white;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(204,0,0,0.4);
-  }
   /* agent selector cards */
   .agent-card {
     display: flex; align-items: center; gap: 10px;
@@ -264,20 +256,6 @@
           placeholder="₪ 3,450,000"/>
       </div>
 
-      <!-- Banner Selector -->
-      <div class="space-y-2.5 text-right">
-        <label class="text-[12px] font-bold text-slate-300 tracking-wide block">באנר שיווקי</label>
-        <div class="grid grid-cols-2 gap-2">
-          <button onclick="setBanner('')" class="banner-btn px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="">ללא</button>
-          <button onclick="setBanner('עסקת השנה!!')" class="banner-btn active px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="עסקת השנה!!">עסקת השנה!!</button>
-          <button onclick="setBanner('למכירה!')" class="banner-btn px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="למכירה!">למכירה!</button>
-          <button onclick="setBanner('להשכרה!')" class="banner-btn px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="להשכרה!">להשכרה!</button>
-          <button onclick="setBanner('מחיר מופחת!')" class="banner-btn px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="מחיר מופחת!">מחיר מופחת!</button>
-          <button onclick="setBanner('בלעדי!')" class="banner-btn px-2 py-2.5 rounded-xl border border-white/20 text-white text-xs font-medium hover:bg-white/10 transition-all" data-value="בלעדי!">בלעדי!</button>
-        </div>
-        <input id="bannerCustom" type="text" maxlength="30" placeholder="או כתוב טקסט חופשי..."
-          class="w-full bg-white/10 text-white placeholder-slate-400 rounded-xl px-3 py-2 text-sm border border-white/15 focus:outline-none focus:border-remax-red focus:bg-white/15 transition-all text-right"/>
-      </div>
 
     </div>
 
@@ -373,12 +351,6 @@
           </div>
         </div>
 
-        <!-- Badge -->
-        <div id="badgeWrap" style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%) rotate(-1.5deg);z-index:10;text-align:center;">
-          <div id="badgeText" style="display:inline-block;background:#CC0000;color:#fff;border:3px solid #fff;border-radius:999px;padding:10px 32px;font-size:18px;font-weight:900;white-space:nowrap;font-family:'Manrope',sans-serif;box-shadow:0 6px 20px rgba(204,0,0,0.45);text-align:center;direction:rtl;line-height:normal;">
-            עסקת השנה!!
-          </div>
-        </div>
       </div>
 
       <!-- PROPERTY DETAILS -->
@@ -662,27 +634,6 @@
     saveToStorage();
   });
 
-  // ── Banner ──
-  function setBanner(value, fromCustom) {
-    document.querySelectorAll('.banner-btn').forEach(b => b.classList.remove('active'));
-    const clicked = document.querySelector(`.banner-btn[data-value="${value}"]`);
-    if (clicked) clicked.classList.add('active');
-    // אם הפעלנו מכפתור קבוע — נקה את שדה הטקסט החופשי
-    if (!fromCustom) document.getElementById('bannerCustom').value = '';
-    const wrap = document.getElementById('badgeWrap');
-    if (!value) {
-      wrap.style.display = 'none';
-    } else {
-      wrap.style.display = '';
-      document.getElementById('badgeText').textContent = value;
-    }
-    saveToStorage();
-  }
-
-  document.getElementById('bannerCustom').addEventListener('input', e => {
-    const val = e.target.value.trim();
-    setBanner(val, true);
-  });
 
   // ── LocalStorage ──
   function saveToStorage() {
@@ -690,7 +641,6 @@
       propType:    document.getElementById('propType').value,
       propInfo:    document.getElementById('propInfo').value,
       propPrice:   document.getElementById('propPrice').value,
-      bannerValue: document.getElementById('bannerCustom').value.trim() || document.querySelector('.banner-btn.active')?.dataset.value || '',
       layout:      currentLayout
     }));
   }
@@ -711,11 +661,6 @@
       if (d.propPrice) {
         document.getElementById('propPrice').value = d.propPrice;
         document.getElementById('displayPrice').textContent = d.propPrice;
-      }
-      if (d.bannerValue !== undefined) {
-        const isCustom = d.bannerValue && !document.querySelector(`.banner-btn[data-value="${d.bannerValue}"]`);
-        if (isCustom) document.getElementById('bannerCustom').value = d.bannerValue;
-        setBanner(d.bannerValue, isCustom);
       }
       if (d.layout) setLayout(d.layout);
     } catch (e) {
@@ -820,8 +765,6 @@
       img.style.display = 'none';
       document.getElementById('slot' + i).classList.remove('has-image');
     });
-    // אפס באנר
-    setBanner('');
     // נקה localStorage
     localStorage.removeItem('remax_draft');
   }
@@ -981,6 +924,7 @@
 
           // הסתר כפתורי X — לא רלוונטיים למודעה הסופית
           doc.querySelectorAll('.slot-clear-btn').forEach(btn => btn.style.display = 'none');
+
 
           // המרת img.slot-img ל-background-image (html2canvas לא תומך object-fit)
           // מחשבים cover ידנית בפיקסלים כי html2canvas לא תומך במילת המפתח "cover"
