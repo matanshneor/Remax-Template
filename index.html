@@ -60,6 +60,15 @@
   .photo-slot.drag-over { outline: 2.5px dashed #CC0000; filter: brightness(1.2); }
   .photo-slot.has-image { cursor: grab; }
   .photo-slot.has-image.panning { cursor: grabbing; user-select: none; }
+  /* banner buttons */
+  .banner-btn { transition: all 0.18s; }
+  .banner-btn.active {
+    background: linear-gradient(135deg,#CC0000,#aa0000);
+    border-color: #CC0000 !important;
+    color: #fff !important;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(204,0,0,0.45);
+  }
   /* agent selector cards */
   .agent-card {
     display: flex; align-items: center; gap: 10px;
@@ -256,6 +265,23 @@
           placeholder="₪ 3,450,000"/>
       </div>
 
+      <!-- Banner Selector -->
+      <div class="space-y-2 text-right">
+        <label class="text-[12px] font-bold text-slate-300 tracking-wide block">באנר שיווקי</label>
+        <div class="grid grid-cols-3 gap-1.5">
+          <button onclick="setBanner('')"           class="banner-btn col-span-3 py-2 rounded-xl border border-white/20 text-slate-300 text-xs font-medium hover:bg-white/10 flex items-center justify-center gap-1" data-value="">
+            <span class="material-symbols-outlined" style="font-size:14px;">block</span> ללא באנר
+          </button>
+          <button onclick="setBanner('עסקת השנה!!')" class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="עסקת השנה!!">עסקת השנה!!</button>
+          <button onclick="setBanner('למכירה!')"     class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="למכירה!">למכירה!</button>
+          <button onclick="setBanner('להשכרה!')"    class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="להשכרה!">להשכרה!</button>
+          <button onclick="setBanner('מחיר מופחת!')" class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="מחיר מופחת!">מחיר מופחת!</button>
+          <button onclick="setBanner('בלעדי!')"     class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="בלעדי!">בלעדי!</button>
+          <button onclick="setBanner('חדש בשוק!')"  class="banner-btn py-2.5 rounded-xl border border-white/20 text-white text-xs font-bold hover:bg-white/10" data-value="חדש בשוק!">חדש בשוק!</button>
+        </div>
+        <input id="bannerCustom" type="text" maxlength="28" placeholder="טקסט חופשי..."
+          class="w-full bg-white/10 text-white placeholder-slate-400 rounded-xl px-3 py-2 text-sm border border-white/15 focus:outline-none focus:border-remax-red focus:bg-white/15 transition-all text-right"/>
+      </div>
 
     </div>
 
@@ -351,6 +377,10 @@
           </div>
         </div>
 
+        <!-- Badge -->
+        <div id="badgeWrap" style="display:none;position:absolute;bottom:-24px;left:0;right:0;z-index:10;text-align:center;direction:ltr;pointer-events:none;">
+          <div id="badgeText" style="display:inline-block;background:#CC0000;color:#fff;border:3.5px solid #fff;border-radius:14px;padding:0 30px;height:48px;line-height:48px;font-size:20px;font-weight:900;white-space:nowrap;font-family:'Manrope',sans-serif;box-shadow:0 8px 28px rgba(0,0,0,0.30),0 3px 10px rgba(204,0,0,0.5);direction:rtl;letter-spacing:0.4px;transform:rotate(1.5deg);transform-origin:center;">★ עסקת השנה!! ★</div>
+        </div>
       </div>
 
       <!-- PROPERTY DETAILS -->
@@ -635,12 +665,32 @@
   });
 
 
+  // ── Banner ──
+  function setBanner(value, fromCustom) {
+    document.querySelectorAll('.banner-btn').forEach(b => b.classList.remove('active'));
+    const clicked = document.querySelector(`.banner-btn[data-value="${CSS.escape(value)}"]`);
+    if (clicked) clicked.classList.add('active');
+    if (!fromCustom) document.getElementById('bannerCustom').value = '';
+    const wrap = document.getElementById('badgeWrap');
+    if (!value) {
+      wrap.style.display = 'none';
+    } else {
+      wrap.style.display = '';
+      document.getElementById('badgeText').textContent = '★ ' + value + ' ★';
+    }
+    saveToStorage();
+  }
+  document.getElementById('bannerCustom').addEventListener('input', e => {
+    setBanner(e.target.value.trim(), true);
+  });
+
   // ── LocalStorage ──
   function saveToStorage() {
     localStorage.setItem('remax_draft', JSON.stringify({
       propType:    document.getElementById('propType').value,
       propInfo:    document.getElementById('propInfo').value,
       propPrice:   document.getElementById('propPrice').value,
+      bannerValue: document.getElementById('bannerCustom').value.trim() || document.querySelector('.banner-btn.active:not([data-value=""])')?.dataset.value || '',
       layout:      currentLayout
     }));
   }
@@ -661,6 +711,11 @@
       if (d.propPrice) {
         document.getElementById('propPrice').value = d.propPrice;
         document.getElementById('displayPrice').textContent = d.propPrice;
+      }
+      if (d.bannerValue !== undefined) {
+        const isCustom = d.bannerValue && !document.querySelector(`.banner-btn[data-value="${CSS.escape(d.bannerValue)}"]`);
+        if (isCustom) document.getElementById('bannerCustom').value = d.bannerValue;
+        setBanner(d.bannerValue, isCustom);
       }
       if (d.layout) setLayout(d.layout);
     } catch (e) {
@@ -765,7 +820,7 @@
       img.style.display = 'none';
       document.getElementById('slot' + i).classList.remove('has-image');
     });
-    // נקה localStorage
+    setBanner('');
     localStorage.removeItem('remax_draft');
   }
 
@@ -889,6 +944,20 @@
     // ממתינים שה-browser יחשב layout על ה-clone
     await new Promise(r => setTimeout(r, 80));
 
+    // מדידת מיקום הבאנר לציור ידני (כמו moshePos)
+    let badgeInfo = null;
+    const cloneBadgeWrap = clone.querySelector('#badgeWrap');
+    const cloneBadgeText = clone.querySelector('#badgeText');
+    if (cloneBadgeWrap && cloneBadgeWrap.style.display !== 'none' && cloneBadgeText) {
+      const cloneRect = clone.getBoundingClientRect();
+      const textRect  = cloneBadgeText.getBoundingClientRect();
+      badgeInfo = {
+        cx:   (textRect.left + textRect.right)  / 2 - cloneRect.left,
+        cy:   (textRect.top  + textRect.bottom) / 2 - cloneRect.top,
+        text: cloneBadgeText.textContent.trim()
+      };
+    }
+
     try {
       // מיקום תמונת משה — מה-CLONE (שיש לו layout תקין ו-position:relative)
       const cloneMosheImg = clone.querySelector('#moshe-img');
@@ -924,6 +993,10 @@
 
           // הסתר כפתורי X — לא רלוונטיים למודעה הסופית
           doc.querySelectorAll('.slot-clear-btn').forEach(btn => btn.style.display = 'none');
+
+          // הסתר באנר — יצויר ידנית על Canvas בדיוק מושלם
+          const clonedBW = el.querySelector('#badgeWrap');
+          if (clonedBW) clonedBW.style.opacity = '0';
 
 
           // המרת img.slot-img ל-background-image (html2canvas לא תומך object-fit)
@@ -1000,6 +1073,63 @@
         ctx.arc(cx + cw / 2, cy + ch / 2, cw / 2 - borderInset, 0, Math.PI * 2);
         ctx.clip();
         ctx.drawImage(mosheImgEl, drawX, drawY, drawW, drawH);
+        ctx.restore();
+      }
+
+      // ── ציור ידני של הבאנר השיווקי ──
+      if (badgeInfo && badgeInfo.text) {
+        const s = CAPTURE_SCALE * outScale;
+        const bcx = badgeInfo.cx * s;
+        const bcy = badgeInfo.cy * s;
+
+        ctx.save();
+        ctx.translate(bcx, bcy);
+        ctx.rotate(1.5 * Math.PI / 180);
+        ctx.translate(-bcx, -bcy);
+
+        // מדידת רוחב טקסט ב-Canvas
+        const fontSize = Math.round(20 * s);
+        ctx.font = `900 ${fontSize}px Manrope, sans-serif`;
+        ctx.direction = 'rtl';
+        const textW = ctx.measureText(badgeInfo.text).width;
+        const padX  = 30 * s;
+        const pillW = textW + padX * 2;
+        const pillH = 48 * s;
+        const radius = 14 * s;
+        const px = bcx - pillW / 2;
+        const py = bcy - pillH / 2;
+
+        // צל כהה
+        ctx.shadowColor   = 'rgba(0,0,0,0.30)';
+        ctx.shadowBlur    = 28 * s;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 8 * s;
+
+        // מילוי אדום
+        ctx.fillStyle = '#CC0000';
+        ctx.beginPath();
+        ctx.roundRect(px, py, pillW, pillH, radius);
+        ctx.fill();
+
+        // צל אדום (גלו)
+        ctx.shadowColor   = 'rgba(204,0,0,0.50)';
+        ctx.shadowBlur    = 10 * s;
+        ctx.shadowOffsetY = 3 * s;
+
+        // מסגרת לבנה
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth   = 3.5 * s;
+        ctx.stroke();
+
+        // טקסט
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur  = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.fillStyle    = '#ffffff';
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(badgeInfo.text, bcx, bcy);
+
         ctx.restore();
       }
 
