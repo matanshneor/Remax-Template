@@ -58,5 +58,12 @@ const AGENTS = [
     license: "311106208",
     phone:   "052-8249515",
     photo:   "images/WhatsApp Image 2026-04-27 at 14.44.29.jpeg"
+  },
+  {
+    name:    "הדס יחזקאל",
+    role:    "סוכנת נדל\"ן",
+    license: "3244972",
+    phone:   "053-8243590",
+    photo:   "images/WhatsApp Image 2026-04-27 at 15.03.05.jpeg"
   }
 ];
