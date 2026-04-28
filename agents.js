@@ -51,5 +51,12 @@ const AGENTS = [
     license: "3166785",
     phone:   "050-7690054",
     photo:   "images/hadas_aharon.png"
+  },
+  {
+    name:    "יהודית זקן",
+    role:    "סוכנת נדל\"ן",
+    license: "311106208",
+    phone:   "052-8249515",
+    photo:   "images/WhatsApp Image 2026-04-27 at 14.44.29.jpeg"
   }
 ];
