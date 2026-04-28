@@ -47,10 +47,33 @@
     box-shadow: 4px 0 30px rgba(0,31,77,0.25);
   }
   /* photo slot hover */
-  .photo-slot { transition: all 0.2s; }
+  .photo-slot {
+    position: relative; background: #708090; overflow: hidden;
+    cursor: pointer; border-radius: 6px; transition: all 0.2s;
+  }
   .photo-slot:hover { filter: brightness(1.08); }
+  .photo-slot .slot-img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .photo-slot .placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 6px; color: #fff;
+  }
+  .photo-slot .placeholder .material-symbols-outlined { font-size: 28px; opacity: 0.8; }
+  .photo-slot .placeholder .placeholder-label { font-size: 12px; font-weight: bold; opacity: 0.9; }
   .photo-slot.has-image .placeholder { display: none !important; }
   .photo-slot.has-image .slot-img { display: block !important; }
+  #badgeWrap {
+    display: none; position: absolute; bottom: -26px; left: 0; right: 0;
+    z-index: 10; text-align: center; direction: ltr; pointer-events: none;
+  }
+  #badgeText {
+    display: inline-block;
+    background: linear-gradient(135deg, #b80000 0%, #CC0000 60%, #d40000 100%);
+    color: #fff; border: 2px solid rgba(255,255,255,0.85); border-radius: 6px;
+    padding: 0 44px; height: 52px; line-height: 52px; font-size: 19px;
+    font-weight: 800; white-space: nowrap; font-family: 'Manrope', sans-serif;
+    letter-spacing: 2.5px; direction: rtl;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
+  }
   .slot-clear-btn { display: none; position:absolute; top:5px; left:5px; z-index:10;
     background:rgba(204,0,0,0.85); border:none; border-radius:50%; width:26px; height:26px;
     color:#fff; font-size:16px; line-height:1; cursor:pointer; align-items:center;
@@ -342,49 +365,45 @@
       <!-- PHOTOS GRID -->
       <div id="photoGrid" style="background:#1B3564;padding:12px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:160px 160px;gap:8px;position:relative;">
 
-        <div class="photo-slot" id="slot0"
-          style="position:relative;background:#708090;overflow:hidden;cursor:pointer;border-radius:6px;">
-          <img class="slot-img" id="img0" style="width:100%;height:100%;object-fit:cover;display:none;" alt=""/>
+        <div class="photo-slot" id="slot0">
+          <img class="slot-img" id="img0" alt=""/>
           <button class="slot-clear-btn" onclick="clearSlot(event,0)" title="הסר תמונה">✕</button>
-          <div class="placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;">
-            <span class="material-symbols-outlined" style="font-size:28px;opacity:0.8;">add_a_photo</span>
-            <span style="font-size:12px;font-weight:bold;opacity:0.9;">+ צרף תמונה</span>
+          <div class="placeholder">
+            <span class="material-symbols-outlined">add_a_photo</span>
+            <span class="placeholder-label">+ צרף תמונה</span>
           </div>
         </div>
 
-        <div class="photo-slot" id="slot1"
-          style="position:relative;background:#708090;overflow:hidden;cursor:pointer;border-radius:6px;">
-          <img class="slot-img" id="img1" style="width:100%;height:100%;object-fit:cover;display:none;" alt=""/>
+        <div class="photo-slot" id="slot1">
+          <img class="slot-img" id="img1" alt=""/>
           <button class="slot-clear-btn" onclick="clearSlot(event,1)" title="הסר תמונה">✕</button>
-          <div class="placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;">
-            <span class="material-symbols-outlined" style="font-size:28px;opacity:0.8;">add_a_photo</span>
-            <span style="font-size:12px;font-weight:bold;opacity:0.9;">+ צרף תמונה</span>
+          <div class="placeholder">
+            <span class="material-symbols-outlined">add_a_photo</span>
+            <span class="placeholder-label">+ צרף תמונה</span>
           </div>
         </div>
 
-        <div class="photo-slot" id="slot2"
-          style="position:relative;background:#708090;overflow:hidden;cursor:pointer;border-radius:6px;">
-          <img class="slot-img" id="img2" style="width:100%;height:100%;object-fit:cover;display:none;" alt=""/>
+        <div class="photo-slot" id="slot2">
+          <img class="slot-img" id="img2" alt=""/>
           <button class="slot-clear-btn" onclick="clearSlot(event,2)" title="הסר תמונה">✕</button>
-          <div class="placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;">
-            <span class="material-symbols-outlined" style="font-size:28px;opacity:0.8;">add_a_photo</span>
-            <span style="font-size:12px;font-weight:bold;opacity:0.9;">+ צרף תמונה</span>
+          <div class="placeholder">
+            <span class="material-symbols-outlined">add_a_photo</span>
+            <span class="placeholder-label">+ צרף תמונה</span>
           </div>
         </div>
 
-        <div class="photo-slot" id="slot3"
-          style="position:relative;background:#708090;overflow:hidden;cursor:pointer;border-radius:6px;">
-          <img class="slot-img" id="img3" style="width:100%;height:100%;object-fit:cover;display:none;" alt=""/>
+        <div class="photo-slot" id="slot3">
+          <img class="slot-img" id="img3" alt=""/>
           <button class="slot-clear-btn" onclick="clearSlot(event,3)" title="הסר תמונה">✕</button>
-          <div class="placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;">
-            <span class="material-symbols-outlined" style="font-size:28px;opacity:0.8;">add_a_photo</span>
-            <span style="font-size:12px;font-weight:bold;opacity:0.9;">+ צרף תמונה</span>
+          <div class="placeholder">
+            <span class="material-symbols-outlined">add_a_photo</span>
+            <span class="placeholder-label">+ צרף תמונה</span>
           </div>
         </div>
 
         <!-- Badge — preview only; drawn manually on Canvas for download -->
-        <div id="badgeWrap" style="display:none;position:absolute;bottom:-26px;left:0;right:0;z-index:10;text-align:center;direction:ltr;pointer-events:none;">
-          <div id="badgeText" style="display:inline-block;background:linear-gradient(135deg,#b80000 0%,#CC0000 60%,#d40000 100%);color:#fff;border:2px solid rgba(255,255,255,0.85);border-radius:6px;padding:0 44px;height:52px;line-height:52px;font-size:19px;font-weight:800;white-space:nowrap;font-family:'Manrope',sans-serif;letter-spacing:2.5px;box-shadow:0 8px 32px rgba(0,0,0,0.28),0 2px 8px rgba(0,0,0,0.18);direction:rtl;">עסקת השנה</div>
+        <div id="badgeWrap">
+          <div id="badgeText">עסקת השנה</div>
         </div>
       </div>
 
@@ -659,19 +678,16 @@
   });
 
   // ── Live preview + Auto-Save ──
-  document.getElementById('propType').addEventListener('input', e => {
-    document.getElementById('displayType').textContent = e.target.value || 'סוג הנכס';
-    if (e.target.value.trim()) e.target.classList.remove('field-error');
-    saveToStorage();
-  });
-  document.getElementById('propInfo').addEventListener('input', e => {
-    document.getElementById('displayInfo').textContent = e.target.value || '';
-    saveToStorage();
-  });
-  document.getElementById('propPrice').addEventListener('input', e => {
-    document.getElementById('displayPrice').textContent = e.target.value || '';
-    if (e.target.value.trim()) e.target.classList.remove('field-error');
-    saveToStorage();
+  [
+    { input: 'propType',  display: 'displayType',  fallback: 'סוג הנכס', validate: true },
+    { input: 'propInfo',  display: 'displayInfo',  fallback: '',          validate: false },
+    { input: 'propPrice', display: 'displayPrice', fallback: '',          validate: true },
+  ].forEach(({ input, display, fallback, validate }) => {
+    document.getElementById(input).addEventListener('input', e => {
+      document.getElementById(display).textContent = e.target.value || fallback;
+      if (validate && e.target.value.trim()) e.target.classList.remove('field-error');
+      saveToStorage();
+    });
   });
 
 
@@ -689,7 +705,7 @@
     if (!value) {
       wrap.style.display = 'none';
     } else {
-      wrap.style.display = '';
+      wrap.style.display = 'block';
       document.getElementById('badgeText').textContent = value;
     }
     saveToStorage();
@@ -1003,6 +1019,15 @@
         ? offsetRelativeTo(cloneMosheContainer, clone)
         : { x: 16, y: 16, w: 104, h: 104 };
 
+      // מדידת מיקום הסלוטים מה-clone לציור ידני
+      const slotData = [];
+      for (let i = 0; i < 4; i++) {
+        const origImg  = document.getElementById('img' + i);
+        const cloneSlot = clone.querySelector('#slot' + i);
+        if (!origImg || !origImg.src || !cloneSlot || !cloneSlot.classList.contains('has-image')) continue;
+        slotData.push({ imgEl: origImg, pos: offsetRelativeTo(cloneSlot, clone) });
+      }
+
       const CAPTURE_SCALE = 3;
 
       // לכידה מה-clone (לא מה-adEl המקורי)
@@ -1029,34 +1054,8 @@
           if (clonedBW) clonedBW.style.opacity = '0';
 
 
-          // המרת img.slot-img ל-background-image (html2canvas לא תומך object-fit)
-          // מחשבים cover ידנית בפיקסלים כי html2canvas לא תומך במילת המפתח "cover"
-          doc.querySelectorAll('img.slot-img').forEach(img => {
-            if (!img.src || img.style.display === 'none') return;
-            const parent = img.parentElement;
-            if (!parent) return;
-            const parentW = parent.offsetWidth  || parent.clientWidth;
-            const parentH = parent.offsetHeight || parent.clientHeight;
-            const imgW = parseInt(img.dataset.natW) || img.naturalWidth  || img.width;
-            const imgH = parseInt(img.dataset.natH) || img.naturalHeight || img.height;
-            if (imgW && imgH && parentW && parentH) {
-              const scale = Math.max(parentW / imgW, parentH / imgH);
-              const bgW   = Math.round(imgW * scale);
-              const bgH   = Math.round(imgH * scale);
-              const posX = img.dataset.posX ?? 50;
-              const posY = img.dataset.posY ?? 50;
-              parent.style.backgroundImage    = `url('${img.src}')`;
-              parent.style.backgroundSize     = `${bgW}px ${bgH}px`;
-              parent.style.backgroundPosition = `${posX}% ${posY}%`;
-              parent.style.backgroundRepeat   = 'no-repeat';
-            } else {
-              parent.style.backgroundImage    = `url('${img.src}')`;
-              parent.style.backgroundSize     = 'cover';
-              parent.style.backgroundPosition = 'center';
-              parent.style.backgroundRepeat   = 'no-repeat';
-            }
-            img.style.display = 'none';
-          });
+          // הסתר תמונות סלוט — יצוירו ידנית על Canvas (כמו משה)
+          doc.querySelectorAll('img.slot-img').forEach(img => { img.style.display = 'none'; });
 
           // הסתר משה ב-clone — נצייר אותו ידנית מהמקור
           const clonedMoshe = el.querySelector('#moshe-img');
@@ -1097,6 +1096,28 @@
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, TARGET_W, TARGET_H);
       ctx.drawImage(raw, 0, 0, TARGET_W, TARGET_H);
+
+      // ציור ידני של תמונות הסלוטים — שמירת פרופורציות (cover נכון)
+      for (const { imgEl, pos } of slotData) {
+        const sx = pos.x * CAPTURE_SCALE * outScale;
+        const sy = pos.y * CAPTURE_SCALE * outScale;
+        const sw = pos.w * CAPTURE_SCALE * outScale;
+        const sh = pos.h * CAPTURE_SCALE * outScale;
+        const natW = imgEl.naturalWidth  || imgEl.width;
+        const natH = imgEl.naturalHeight || imgEl.height;
+        if (!natW || !natH || !sw || !sh) continue;
+        const scale  = Math.max(sw / natW, sh / natH);
+        const drawW  = natW * scale;
+        const drawH  = natH * scale;
+        const drawX  = sx + (sw - drawW) / 2;
+        const drawY  = sy + (sh - drawH) / 2;
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(sx, sy, sw, sh);
+        ctx.clip();
+        ctx.drawImage(imgEl, drawX, drawY, drawW, drawH);
+        ctx.restore();
+      }
 
       // ציור ידני של תמונת משה מהמקור — פול-רזולוציה, contain + עיגול
       if (mosheImgEl.src) {
