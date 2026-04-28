@@ -22,48 +22,48 @@ const AGENTS = [
     role:    "זכיין",
     license: "3181402",
     phone:   "052-8110611",
-    photo:   "images/moshe_shneior_agent.png"
+    photo:   "images/Moshe_Shneor_image.png"
   },
   {
     name:    "ליאור ישראלי",
     role:    "סוכן נדל\"ן",
     license: "3224854",
     phone:   "052-3892647",
-    photo:   "images/lior_israeli.png"
+    photo:   "images/Lior_Israeli_image.png"
   },
   {
     name:    "לימור מרקו",
     role:    "סוכנת נדל\"ן",
     license: "312109174",
     phone:   "052-8421420",
-    photo:   "images/limor_marco.png"
+    photo:   "images/Limor_Marco_image.png"
   },
   {
     name:    "מרים שפנגנטל",
     role:    "סוכנת נדל\"ן",
     license: "31034580",
     phone:   "054-8366822",
-    photo:   "images/miriam_shpangental.png"
+    photo:   "images/Miriam_Shpangental_image.png"
   },
   {
     name:    "הדס אהרון",
     role:    "סוכנת נדל\"ן",
     license: "3166785",
     phone:   "050-7690054",
-    photo:   "images/hadas_aharon.png"
+    photo:   "images/Hadas_Aharon_image.png"
   },
   {
     name:    "יהודית זקן",
     role:    "סוכנת נדל\"ן",
     license: "311106208",
     phone:   "052-8249515",
-    photo:   "images/WhatsApp Image 2026-04-27 at 14.44.29_nobg.png"
+    photo:   "images/Yehudit_Zaken_image.png"
   },
   {
     name:    "הדס יחזקאל",
     role:    "סוכנת נדל\"ן",
     license: "3244972",
     phone:   "053-8243590",
-    photo:   "images/WhatsApp Image 2026-04-27 at 15.03.05_nobg.png"
+    photo:   "images/Hadas_Yechezkel_image.png"
   }
 ];
