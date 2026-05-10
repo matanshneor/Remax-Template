@@ -69,7 +69,7 @@
     display: inline-block;
     background: linear-gradient(135deg, #b80000 0%, #CC0000 60%, #d40000 100%);
     color: #fff; border: 2px solid rgba(255,255,255,0.85); border-radius: 6px;
-    padding: 0 44px; height: 52px; line-height: 52px; font-size: 19px;
+    padding: 0 44px; height: 62px; line-height: 62px; font-size: 24px;
     font-weight: 800; white-space: nowrap; font-family: 'Manrope', sans-serif;
     letter-spacing: 2.5px; direction: rtl;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
@@ -411,10 +411,10 @@
       <div style="background:#1B3564;padding:0 12px 12px;">
         <div style="background:#fff;padding:32px 40px 24px;text-align:center;direction:rtl;border-radius:10px;">
           <div style="height:4px;background:#CC0000;width:48px;margin:0 auto 14px;border-radius:2px;"></div>
-          <div id="displayType" style="color:#1B3564;font-size:32px;font-weight:900;font-family:'Manrope',sans-serif;margin-bottom:6px;min-height:40px;letter-spacing:-0.3px;">דירת גן</div>
-          <div id="displayInfo" style="color:#2d3142;font-size:19px;font-weight:700;line-height:1.7;margin-bottom:12px;min-height:40px;white-space:pre-line;">X חדרים (במקור Y), גינה Z מ״ר
+          <div id="displayType" style="color:#1B3564;font-size:35px;font-weight:900;font-family:'Manrope',sans-serif;margin-bottom:6px;min-height:44px;letter-spacing:-0.3px;">דירת גן</div>
+          <div id="displayInfo" style="color:#2d3142;font-size:25px;font-weight:700;line-height:1.7;margin-bottom:12px;min-height:40px;white-space:pre-line;">X חדרים (במקור Y), גינה Z מ״ר
 יחידת הורים, יונקרס, מזגנים</div>
-          <div id="displayPrice" style="color:#CC0000;font-size:31px;font-weight:900;font-family:'Manrope',sans-serif;min-height:44px;letter-spacing:-0.5px;text-shadow:0 2px 8px rgba(204,0,0,0.18);border-top:2px solid #CC0000;padding-top:10px;margin-top:4px;">רק: X,XXX,XXX ש״ח</div>
+          <div id="displayPrice" style="color:#CC0000;font-size:32px;font-weight:900;font-family:'Manrope',sans-serif;min-height:50px;letter-spacing:-0.5px;text-shadow:0 2px 8px rgba(204,0,0,0.18);border-top:2px solid #CC0000;padding-top:10px;margin-top:4px;">רק: X,XXX,XXX ש״ח</div>
         </div>
       </div>
 
@@ -1164,7 +1164,7 @@
         ctx.save();
 
         // פונט + letter-spacing (Canvas API מודרני)
-        const fontSize = Math.round(19 * s);
+        const fontSize = Math.round(24 * s);
         ctx.font = `800 ${fontSize}px Manrope, sans-serif`;
         ctx.direction    = 'rtl';
         ctx.textAlign    = 'center';
@@ -1175,7 +1175,7 @@
         const textW = ctx.measureText(badgeInfo.text).width;
         const padX  = 44 * s;
         const pillW = textW + padX * 2;
-        const pillH = 52 * s;
+        const pillH = 62 * s;
         const radius = 6 * s;
         const px = bcx - pillW / 2;
         const py = bcy - pillH / 2;
