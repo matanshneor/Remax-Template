@@ -71,7 +71,7 @@
     display: inline-block;
     background: linear-gradient(135deg, #b80000 0%, #CC0000 60%, #d40000 100%);
     color: #fff; border: 2px solid rgba(255,255,255,0.85); border-radius: 6px;
-    padding: 0 44px; height: 62px; line-height: 62px; font-size: 24px;
+    padding: 0 44px; height: 64px; line-height: 64px; font-size: 28px;
     font-weight: 800; white-space: nowrap; font-family: 'Manrope', sans-serif;
     letter-spacing: 2.5px; direction: rtl;
     box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18);
@@ -1280,7 +1280,7 @@
         ctx.save();
 
         // פונט + letter-spacing (Canvas API מודרני)
-        const fontSize = Math.round(24 * s);
+        const fontSize = Math.round(28 * s);
         ctx.font = `800 ${fontSize}px Manrope, sans-serif`;
         ctx.direction    = 'rtl';
         ctx.textAlign    = 'center';
@@ -1291,7 +1291,7 @@
         const textW = ctx.measureText(badgeInfo.text).width;
         const padX  = 44 * s;
         const pillW = textW + padX * 2;
-        const pillH = 62 * s;
+        const pillH = 64 * s;
         const radius = 6 * s;
         const px = bcx - pillW / 2;
         const py = bcy - pillH / 2;
