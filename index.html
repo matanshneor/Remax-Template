@@ -1213,7 +1213,7 @@
       ctx.fillRect(0, 0, TARGET_W, TARGET_H);
       ctx.drawImage(raw, 0, 0, TARGET_W, TARGET_H);
 
-      // ציור ידני של תמונות הסלוטים — שמירת פרופורציות (cover נכון)
+      // ציור ידני של תמונות הסלוטים — cover + כיבוד מיקום הגרירה (posX/posY)
       for (const { imgEl, pos } of slotData) {
         const sx = pos.x * CAPTURE_SCALE * outScale;
         const sy = pos.y * CAPTURE_SCALE * outScale;
@@ -1225,11 +1225,15 @@
         const scale  = Math.max(sw / natW, sh / natH);
         const drawW  = natW * scale;
         const drawH  = natH * scale;
-        const drawX  = sx + (sw - drawW) / 2;
-        const drawY  = sy + (sh - drawH) / 2;
+        // כיבוד מיקום גרירת המשתמש (object-position %)
+        const posX   = parseFloat(imgEl.dataset.posX ?? 50) / 100;
+        const posY   = parseFloat(imgEl.dataset.posY ?? 50) / 100;
+        const drawX  = sx - (drawW - sw) * posX;
+        const drawY  = sy - (drawH - sh) * posY;
+        const slotR = 8 * CAPTURE_SCALE * outScale;
         ctx.save();
         ctx.beginPath();
-        ctx.rect(sx, sy, sw, sh);
+        ctx.roundRect(sx, sy, sw, sh, slotR);
         ctx.clip();
         ctx.drawImage(imgEl, drawX, drawY, drawW, drawH);
         ctx.restore();
