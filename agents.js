@@ -65,5 +65,12 @@ const AGENTS = [
     license: "3244972",
     phone:   "053-8243590",
     photo:   "images/Hadas_Yechezkel_image.png"
+  },
+  {
+    name:    "אפרת לוי",
+    role:    "סוכנת נדל\"ן",
+    license: "3151288",
+    phone:   "050-4443830",
+    photo:   "images/Efrat_Levi_image.png"
   }
 ];
