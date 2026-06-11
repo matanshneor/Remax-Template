@@ -35,7 +35,7 @@ const AGENTS = [
     name:    "לימור מרקו",
     role:    "סוכנת נדל\"ן",
     license: "312109174",
-    phone:   "052-8421420",
+    phone:   "053-3453961",
     photo:   "images/Limor_Marco_image.png"
   },
   {
@@ -72,5 +72,26 @@ const AGENTS = [
     license: "3151288",
     phone:   "050-4443830",
     photo:   "images/Efrat_Levi_image.png"
+  },
+  {
+    name:    "מאיר מאור אקריש",
+    role:    "סוכן נדל\"ן",
+    license: "31927075",
+    phone:   "050-6999596",
+    photo:   "images/Meir_Maor_Akrish_image.png"
+  },
+  {
+    name:    "אברהם קטרי",
+    role:    "סוכן נדל\"ן",
+    license: "3204910",
+    phone:   "058-7551878",
+    photo:   "images/Avraham_Katri_image.png"
+  },
+  {
+    name:    "רחל מלכא",
+    role:    "סוכנת נדל\"ן",
+    license: "31929675",
+    phone:   "055-6697474",
+    photo:   "images/Rachel_Malka_image.png"
   }
 ];
