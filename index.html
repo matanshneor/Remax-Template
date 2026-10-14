@@ -139,20 +139,17 @@
   }
   .ad-sub { font-size: 18px; font-weight: 700; margin-top: 8px; text-align: right; }
   .ad-divider { height: 2px; background: linear-gradient(to left, rgba(255,255,255,0.7), rgba(255,255,255,0)); margin: 10px 0 12px; }
-  .ad-features { display: flex; flex-direction: column; gap: 7px; }
-  .ad-feat { display: flex; align-items: center; gap: 9px; }
-  .ad-feat-icon {
-    width: 26px; height: 26px; border-radius: 50%; background: #fff; flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    display: flex; align-items: center; justify-content: center;
+  .ad-features { display: flex; flex-direction: column; gap: 6px; }
+  .ad-feat { display: flex; align-items: flex-start; gap: 8px; font-size: 17px; }
+  /* נקודה לבנה, ממורכזת לשורה הראשונה של הטקסט */
+  .ad-feat-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex-shrink: 0;
+    margin-top: calc(0.65em - 3.5px);
   }
-  .ad-feat-icon .material-symbols-outlined {
-    font-size: 17px; color: #CC0000; line-height: 1;
-    font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20;
-  }
-  .ad-feat-text { font-size: 14px; font-weight: 600; line-height: 1.25; }
+  .ad-feat-text { font-weight: 700; line-height: 1.3; min-width: 0; overflow-wrap: anywhere; }
   .ad-price-wrap { margin-top: 16px; text-align: center; }
-  .ad-price-wrap .ad-brush { display: block; margin-right: -32px; padding: 4px 22px 6px 40px; padding-right: 36px; }
+  /* המשיכה האדומה ברוחב הכיתוב — מעוגנת לימין כמו שאר המשיכות */
+  .ad-price-wrap .ad-brush { text-align: center; margin-right: -32px; padding: 4px 36px 6px 34px; }
   .ad-price-label { display: block; font-size: 18px; font-weight: 800; line-height: 1.45; margin-bottom: -6px; }
   .ad-price { display: block; font-size: 30px; font-weight: 900; line-height: 1.45; letter-spacing: 0.3px; }
   .ad-photos { background: #fff; padding: 3px 0 0; display: flex; flex-direction: column; }
@@ -164,12 +161,8 @@
     background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22540%22%20height%3D%22160%22%20viewBox%3D%220%200%20540%20160%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22b%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232a5bb5%22%2F%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%231B3564%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230d1f48%22%2F%3E%3C%2FlinearGradient%3E%3ClinearGradient%20id%3D%22s%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3Cstop%20offset%3D%22.5%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.09%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22540%22%20height%3D%22160%22%20fill%3D%22url%28%23b%29%22%2F%3E%3Cpath%20d%3D%22M160%2C160%20L300%2C0%20L420%2C0%20L280%2C160Z%22%20fill%3D%22url%28%23s%29%22%2F%3E%3Cpath%20d%3D%22M330%2C160%20L450%2C0%20L490%2C0%20L370%2C160Z%22%20fill%3D%22url%28%23s%29%22%2F%3E%3Cpath%20d%3D%22M150%2C160%20C175%2C110%20205%2C60%20262%2C0%20L276%2C0%20C222%2C60%20192%2C112%20168%2C160Z%22%20fill%3D%22%23CC0000%22%2F%3E%3Cpath%20d%3D%22M178%2C160%20C200%2C118%20228%2C74%20280%2C18%20L284%2C22%20C236%2C76%20208%2C120%20188%2C160Z%22%20fill%3D%22%23fff%22%20opacity%3D%22.55%22%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat, #1B3564;
     color: #fff; padding: 0 16px 0 0;
   }
-  .ad-slogan {
-    width: 130px; flex-shrink: 0; text-align: center; color: #FFC93C;
-    font-family: 'Amatic SC', 'HeeboAd', sans-serif; font-weight: 700; font-size: 33px; line-height: 1.05; white-space: nowrap;
-    transform: rotate(-9deg); z-index: 2;
-  }
-  .ad-agent-info { flex: 1; text-align: center; padding-left: 168px; z-index: 2; min-width: 0; }
+  /* פרטי הסוכן — מימין לפס האדום-לבן האלכסוני */
+  .ad-agent-info { flex: 1; text-align: center; padding-left: 262px; z-index: 2; min-width: 0; }
   .ad-agent-name { font-size: 27px; font-weight: 900; line-height: 1.1; white-space: nowrap; }
   .ad-agent-company { font-size: 15px; font-weight: 700; line-height: 1.3; color: #fff; }
   .ad-phone-row {
@@ -612,7 +605,6 @@
 
       <!-- FOOTER: סוכן -->
       <div class="ad-footer">
-        <div class="ad-slogan">הבית הבא שלך<br>מתחיל כאן!</div>
         <div class="ad-agent-info">
           <div id="agentName" class="ad-agent-name">משה שניאור</div>
           <div class="ad-agent-company">רימקס טאבו נכסים</div>
@@ -690,8 +682,16 @@
 <input type="file" id="fileInput1" accept="image/*" style="display:none" onchange="loadImage(1,this)">
 <input type="file" id="fileInput2" accept="image/*" style="display:none" onchange="loadImage(2,this)">
 
+<script src="agent-photos.js"></script>
 <script src="agents.js"></script>
 <script>
+  // תמונת סוכן — מהעותק המוטמע (agent-photos.js) כשקיים. תמונה מקובץ רגיל
+  // "מלכלכת" את ה-canvas כשהדף נפתח בלחיצה כפולה, ואז יצירת ה-PNG נכשלת.
+  function agentPhotoSrc(agent) {
+    const p = agent.photo;
+    return (p && window.AGENT_PHOTOS && window.AGENT_PHOTOS[p]) || p || '';
+  }
+
   const SLOT_IDS = [0, 1, 2];
   let currentAgentIdx = 0;
 
@@ -704,7 +704,7 @@
       card.onclick = () => { selectAgent(idx); saveToStorage(); };
 
       const img = document.createElement('img');
-      img.src = agent.photo || '';
+      img.src = agentPhotoSrc(agent);
       img.alt = agent.name;
       img.onerror = function() { this.hidden = true; };
 
@@ -720,22 +720,33 @@
     });
   }
 
-  // מכווץ גופן של אלמנט עד שרוחבו נכנס ב-maxWidth (בלי maxWidth — רוחב האלמנט עצמו)
+  // מכווץ גופן של אלמנט עד שרוחבו נכנס ב-maxWidth (בלי maxWidth — רוחב האלמנט עצמו).
+  // אם גם בגודל המינימלי הוא לא נכנס — עובר לשבירת שורות, כדי ששום כיתוב לא יחרוג לתמונה.
   function fitText(el, startPx, minPx, maxWidth) {
     if (!el) return;
-    el.style.fontSize = startPx + 'px';
-    let size = startPx;
+    el.style.whiteSpace = '';
+    el.style.maxWidth = '';
     const limit = () => maxWidth ?? el.clientWidth;
-    while (el.scrollWidth > limit() && size > minPx) {
-      size -= 0.5;
-      el.style.fontSize = size + 'px';
+    const shrink = (floor) => {
+      while (el.scrollWidth > limit() && size > floor) {
+        size -= 0.5;
+        el.style.fontSize = size + 'px';
+      }
+    };
+    let size = startPx;
+    el.style.fontSize = size + 'px';
+    shrink(minPx);
+    if (el.scrollWidth > limit()) {
+      el.style.whiteSpace = 'pre-wrap';
+      if (maxWidth) el.style.maxWidth = maxWidth + 'px';
+      shrink(10);   // מילה בודדת ארוכה מדי — מקטינים עוד
     }
   }
 
   function fitAll() {
     requestAnimationFrame(() => {
       fitText(document.getElementById('badgeText'),       36, 18, 200);
-      fitText(document.getElementById('displayType'),     30, 18);
+      fitText(document.getElementById('displayType'),     30, 16);
       fitText(document.getElementById('displayLocation'), 24, 14, 160);
       fitText(document.getElementById('displaySub'),      18, 12);
       fitText(document.getElementById('displayPrice'),    30, 18, 155);
@@ -761,7 +772,7 @@
     document.getElementById('agentLicense').textContent = 'רישיון מתווך: ' + agent.license;
     document.getElementById('agentPhone').textContent   = agent.phone;
     const mosheImg = document.getElementById('moshe-img');
-    mosheImg.src = agent.photo || '';
+    mosheImg.src = agentPhotoSrc(agent);
     mosheImg.style.display = agent.photo ? 'block' : 'none';
     document.querySelectorAll('.agent-card').forEach((c, i) => {
       c.classList.toggle('selected', i === idx);
@@ -771,7 +782,7 @@
     const previewPhoto = document.getElementById('agentPreviewPhoto');
     const previewPlaceholder = document.getElementById('agentPreviewPhotoPlaceholder');
     if (agent.photo) {
-      previewPhoto.src = agent.photo;
+      previewPhoto.src = agentPhotoSrc(agent);
       previewPhoto.style.display = 'block';
       previewPlaceholder.style.display = 'none';
     } else {
@@ -786,27 +797,7 @@
     document.getElementById('btnSwitchAgentArrow').style.transform = 'rotate(0deg)';
   }
 
-  // ── רשימת יתרונות עם אייקונים אוטומטיים ──
-  const FEATURE_ICONS = [
-    [/גינה|חצר|דשא/,            'park'],
-    [/ממ["״']?ד|מקלט/,          'shield'],
-    [/חני/,                      'directions_car'],
-    [/הורים|שינה/,               'bed'],
-    [/מעלית/,                    'elevator'],
-    [/מרפס|נוף/,                 'balcony'],
-    [/מחסן/,                     'warehouse'],
-    [/מיזוג|מזגן/,               'ac_unit'],
-    [/בריכה/,                    'pool'],
-    [/משופצ|שיפוץ/,              'construction'],
-    [/מטבח/,                     'kitchen'],
-    [/יחידת דיור|יחידה|דירה|בית/, 'home'],
-  ];
-
-  function iconForFeature(text) {
-    for (const [re, icon] of FEATURE_ICONS) if (re.test(text)) return icon;
-    return 'check';
-  }
-
+  // ── רשימת יתרונות — נקודה לפני כל שורה ──
   function renderFeatures() {
     const box = document.getElementById('displayInfo');
     box.innerHTML = '';
@@ -815,16 +806,12 @@
       .forEach(line => {
         const row  = document.createElement('div');
         row.className = 'ad-feat';
-        const circle = document.createElement('span');
-        circle.className = 'ad-feat-icon';
-        const icon = document.createElement('span');
-        icon.className = 'material-symbols-outlined';
-        icon.textContent = iconForFeature(line);
-        circle.appendChild(icon);
+        const dot  = document.createElement('span');
+        dot.className = 'ad-feat-dot';
         const text = document.createElement('span');
         text.className = 'ad-feat-text';
         text.textContent = line;
-        row.appendChild(circle);
+        row.appendChild(dot);
         row.appendChild(text);
         box.appendChild(row);
       });
@@ -1298,7 +1285,10 @@
       }, 'image/png');
 
     } catch (err) {
-      msg.textContent = '❌ שגיאה: ' + (err && err.message ? err.message : String(err));
+      const tainted = err && /tainted/i.test(err.message || '');
+      msg.textContent = tainted
+        ? '❌ תמונת הסוכן לא נטענה כראוי. יש להריץ update_agent_photos.py (ראו CLAUDE.md)'
+        : '❌ שגיאה: ' + (err && err.message ? err.message : String(err));
     } finally {
       clearInterval(progInterval);
       progressFill.style.width = '100%';

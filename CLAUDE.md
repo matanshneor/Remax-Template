@@ -28,6 +28,8 @@
 |------|--------|
 | `index.html` | **הכלי הראשי** |
 | `agents.js` | רשימת הסוכנים — ניתן לערוך בעורך טקסט רגיל |
+| `agent-photos.js` | עותק מוטמע של תמונות הסוכנים — **נוצר אוטומטית**, לא לערוך ידנית |
+| `update_agent_photos.py` | מייצר מחדש את `agent-photos.js` מתיקיית `images/` |
 | `images/` | תמונות כל הסוכנים + לוגו |
 
 ## סוכנים קיימים (agents.js)
@@ -88,6 +90,14 @@ canvas.save('images/Agent_Name_image.png')
   photo:   "images/Agent_Name_image.png"
 }
 ```
+
+### 4. עדכון agent-photos.js — חובה!
+```bash
+python3 update_agent_photos.py
+```
+בלי זה, כשפותחים את `index.html` בלחיצה כפולה, יצירת ה-PNG נכשלת עם השגיאה
+"Tainted canvases may not be exported" — הדפדפן חוסם ציור של קובץ תמונה מקומי.
+`agent-photos.js` מכיל את התמונות כ-base64 (WebP) ולכן הדפדפן מתייחס אליהן כחלק מהדף.
 
 ## פרטי תצוגת תמונת הסוכן
 - גודל עיגול בתצוגה: **104×104px** (עם border-radius: 50%)
