@@ -146,7 +146,7 @@
     width: 7px; height: 7px; border-radius: 50%; background: #fff; flex-shrink: 0;
     margin-top: calc(0.65em - 3.5px);
   }
-  .ad-feat-text { font-weight: 700; line-height: 1.3; }
+  .ad-feat-text { font-weight: 700; line-height: 1.3; min-width: 0; overflow-wrap: anywhere; }
   .ad-price-wrap { margin-top: 16px; text-align: center; }
   /* המשיכה האדומה ברוחב הכיתוב — מעוגנת לימין כמו שאר המשיכות */
   .ad-price-wrap .ad-brush { text-align: center; margin-right: -32px; padding: 4px 36px 6px 34px; }
@@ -712,22 +712,33 @@
     });
   }
 
-  // מכווץ גופן של אלמנט עד שרוחבו נכנס ב-maxWidth (בלי maxWidth — רוחב האלמנט עצמו)
+  // מכווץ גופן של אלמנט עד שרוחבו נכנס ב-maxWidth (בלי maxWidth — רוחב האלמנט עצמו).
+  // אם גם בגודל המינימלי הוא לא נכנס — עובר לשבירת שורות, כדי ששום כיתוב לא יחרוג לתמונה.
   function fitText(el, startPx, minPx, maxWidth) {
     if (!el) return;
-    el.style.fontSize = startPx + 'px';
-    let size = startPx;
+    el.style.whiteSpace = '';
+    el.style.maxWidth = '';
     const limit = () => maxWidth ?? el.clientWidth;
-    while (el.scrollWidth > limit() && size > minPx) {
-      size -= 0.5;
-      el.style.fontSize = size + 'px';
+    const shrink = (floor) => {
+      while (el.scrollWidth > limit() && size > floor) {
+        size -= 0.5;
+        el.style.fontSize = size + 'px';
+      }
+    };
+    let size = startPx;
+    el.style.fontSize = size + 'px';
+    shrink(minPx);
+    if (el.scrollWidth > limit()) {
+      el.style.whiteSpace = 'pre-wrap';
+      if (maxWidth) el.style.maxWidth = maxWidth + 'px';
+      shrink(10);   // מילה בודדת ארוכה מדי — מקטינים עוד
     }
   }
 
   function fitAll() {
     requestAnimationFrame(() => {
       fitText(document.getElementById('badgeText'),       36, 18, 200);
-      fitText(document.getElementById('displayType'),     30, 18);
+      fitText(document.getElementById('displayType'),     30, 16);
       fitText(document.getElementById('displayLocation'), 24, 14, 160);
       fitText(document.getElementById('displaySub'),      18, 12);
       fitText(document.getElementById('displayPrice'),    30, 18, 155);
