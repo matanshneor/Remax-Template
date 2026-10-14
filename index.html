@@ -139,20 +139,17 @@
   }
   .ad-sub { font-size: 18px; font-weight: 700; margin-top: 8px; text-align: right; }
   .ad-divider { height: 2px; background: linear-gradient(to left, rgba(255,255,255,0.7), rgba(255,255,255,0)); margin: 10px 0 12px; }
-  .ad-features { display: flex; flex-direction: column; gap: 7px; }
-  .ad-feat { display: flex; align-items: center; gap: 9px; }
-  .ad-feat-icon {
-    width: 26px; height: 26px; border-radius: 50%; background: #fff; flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    display: flex; align-items: center; justify-content: center;
+  .ad-features { display: flex; flex-direction: column; gap: 6px; }
+  .ad-feat { display: flex; align-items: flex-start; gap: 8px; font-size: 17px; }
+  /* נקודה לבנה, ממורכזת לשורה הראשונה של הטקסט */
+  .ad-feat-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #fff; flex-shrink: 0;
+    margin-top: calc(0.65em - 3.5px);
   }
-  .ad-feat-icon .material-symbols-outlined {
-    font-size: 17px; color: #CC0000; line-height: 1;
-    font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20;
-  }
-  .ad-feat-text { font-size: 14px; font-weight: 600; line-height: 1.25; }
+  .ad-feat-text { font-weight: 700; line-height: 1.3; }
   .ad-price-wrap { margin-top: 16px; text-align: center; }
-  .ad-price-wrap .ad-brush { display: block; margin-right: -32px; padding: 4px 22px 6px 40px; padding-right: 36px; }
+  /* המשיכה האדומה ברוחב הכיתוב — מעוגנת לימין כמו שאר המשיכות */
+  .ad-price-wrap .ad-brush { text-align: center; margin-right: -32px; padding: 4px 36px 6px 34px; }
   .ad-price-label { display: block; font-size: 18px; font-weight: 800; line-height: 1.45; margin-bottom: -6px; }
   .ad-price { display: block; font-size: 30px; font-weight: 900; line-height: 1.45; letter-spacing: 0.3px; }
   .ad-photos { background: #fff; padding: 3px 0 0; display: flex; flex-direction: column; }
@@ -786,27 +783,7 @@
     document.getElementById('btnSwitchAgentArrow').style.transform = 'rotate(0deg)';
   }
 
-  // ── רשימת יתרונות עם אייקונים אוטומטיים ──
-  const FEATURE_ICONS = [
-    [/גינה|חצר|דשא/,            'park'],
-    [/ממ["״']?ד|מקלט/,          'shield'],
-    [/חני/,                      'directions_car'],
-    [/הורים|שינה/,               'bed'],
-    [/מעלית/,                    'elevator'],
-    [/מרפס|נוף/,                 'balcony'],
-    [/מחסן/,                     'warehouse'],
-    [/מיזוג|מזגן/,               'ac_unit'],
-    [/בריכה/,                    'pool'],
-    [/משופצ|שיפוץ/,              'construction'],
-    [/מטבח/,                     'kitchen'],
-    [/יחידת דיור|יחידה|דירה|בית/, 'home'],
-  ];
-
-  function iconForFeature(text) {
-    for (const [re, icon] of FEATURE_ICONS) if (re.test(text)) return icon;
-    return 'check';
-  }
-
+  // ── רשימת יתרונות — נקודה לפני כל שורה ──
   function renderFeatures() {
     const box = document.getElementById('displayInfo');
     box.innerHTML = '';
@@ -815,16 +792,12 @@
       .forEach(line => {
         const row  = document.createElement('div');
         row.className = 'ad-feat';
-        const circle = document.createElement('span');
-        circle.className = 'ad-feat-icon';
-        const icon = document.createElement('span');
-        icon.className = 'material-symbols-outlined';
-        icon.textContent = iconForFeature(line);
-        circle.appendChild(icon);
+        const dot  = document.createElement('span');
+        dot.className = 'ad-feat-dot';
         const text = document.createElement('span');
         text.className = 'ad-feat-text';
         text.textContent = line;
-        row.appendChild(circle);
+        row.appendChild(dot);
         row.appendChild(text);
         box.appendChild(row);
       });
