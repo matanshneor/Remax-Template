@@ -682,8 +682,16 @@
 <input type="file" id="fileInput1" accept="image/*" style="display:none" onchange="loadImage(1,this)">
 <input type="file" id="fileInput2" accept="image/*" style="display:none" onchange="loadImage(2,this)">
 
+<script src="agent-photos.js"></script>
 <script src="agents.js"></script>
 <script>
+  // תמונת סוכן — מהעותק המוטמע (agent-photos.js) כשקיים. תמונה מקובץ רגיל
+  // "מלכלכת" את ה-canvas כשהדף נפתח בלחיצה כפולה, ואז יצירת ה-PNG נכשלת.
+  function agentPhotoSrc(agent) {
+    const p = agent.photo;
+    return (p && window.AGENT_PHOTOS && window.AGENT_PHOTOS[p]) || p || '';
+  }
+
   const SLOT_IDS = [0, 1, 2];
   let currentAgentIdx = 0;
 
@@ -696,7 +704,7 @@
       card.onclick = () => { selectAgent(idx); saveToStorage(); };
 
       const img = document.createElement('img');
-      img.src = agent.photo || '';
+      img.src = agentPhotoSrc(agent);
       img.alt = agent.name;
       img.onerror = function() { this.hidden = true; };
 
@@ -764,7 +772,7 @@
     document.getElementById('agentLicense').textContent = 'רישיון מתווך: ' + agent.license;
     document.getElementById('agentPhone').textContent   = agent.phone;
     const mosheImg = document.getElementById('moshe-img');
-    mosheImg.src = agent.photo || '';
+    mosheImg.src = agentPhotoSrc(agent);
     mosheImg.style.display = agent.photo ? 'block' : 'none';
     document.querySelectorAll('.agent-card').forEach((c, i) => {
       c.classList.toggle('selected', i === idx);
@@ -774,7 +782,7 @@
     const previewPhoto = document.getElementById('agentPreviewPhoto');
     const previewPlaceholder = document.getElementById('agentPreviewPhotoPlaceholder');
     if (agent.photo) {
-      previewPhoto.src = agent.photo;
+      previewPhoto.src = agentPhotoSrc(agent);
       previewPhoto.style.display = 'block';
       previewPlaceholder.style.display = 'none';
     } else {
@@ -1277,7 +1285,10 @@
       }, 'image/png');
 
     } catch (err) {
-      msg.textContent = '❌ שגיאה: ' + (err && err.message ? err.message : String(err));
+      const tainted = err && /tainted/i.test(err.message || '');
+      msg.textContent = tainted
+        ? '❌ תמונת הסוכן לא נטענה כראוי. יש להריץ update_agent_photos.py (ראו CLAUDE.md)'
+        : '❌ שגיאה: ' + (err && err.message ? err.message : String(err));
     } finally {
       clearInterval(progInterval);
       progressFill.style.width = '100%';
