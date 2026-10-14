@@ -134,10 +134,11 @@
   #badgeWrap > span { display: inline-block; }
   .ad-brush-md > span { font-size: 24px; line-height: 1.45; }
   .ad-title {
-    font-size: 30px; font-weight: 900; line-height: 1.08; white-space: pre;
+    font-size: 30px; font-weight: 900; line-height: 1.08; white-space: pre-wrap; overflow-wrap: anywhere;
     margin: 12px 0 10px; letter-spacing: -0.3px; text-align: right;
   }
-  .ad-sub { font-size: 18px; font-weight: 700; margin-top: 8px; text-align: right; }
+  /* כותרת ושורת משנה — כיתוב ארוך יורד שורה ולא חורג לתמונה */
+  .ad-sub { font-size: 18px; font-weight: 700; margin-top: 8px; text-align: right; overflow-wrap: anywhere; }
   .ad-divider { height: 2px; background: linear-gradient(to left, rgba(255,255,255,0.7), rgba(255,255,255,0)); margin: 10px 0 12px; }
   .ad-features { display: flex; flex-direction: column; gap: 6px; }
   .ad-feat { display: flex; align-items: flex-start; gap: 8px; font-size: 17px; }
@@ -753,16 +754,19 @@
     }
   }
 
+  // מדידה עובדת רק על אלמנט גלוי — במובייל התצוגה מוסתרת בזמן עריכה,
+  // ולכן מריצים שוב על העותק שמיוצא ל-PNG (ראו createAd)
+  function fitAllIn(root) {
+    const q = id => root.querySelector('#' + id);
+    fitText(q('badgeText'),       36, 18, 200);
+    fitText(q('displayLocation'), 24, 14, 160);
+    fitText(q('displayPrice'),    30, 18, 155);
+    fitText(q('agentName'),       27, 16);
+    fitText(q('agentPhone'),      27, 18, 165);
+  }
+
   function fitAll() {
-    requestAnimationFrame(() => {
-      fitText(document.getElementById('badgeText'),       36, 18, 200);
-      fitText(document.getElementById('displayType'),     30, 16);
-      fitText(document.getElementById('displayLocation'), 24, 14, 160);
-      fitText(document.getElementById('displaySub'),      18, 12);
-      fitText(document.getElementById('displayPrice'),    30, 18, 155);
-      fitText(document.getElementById('agentName'),       27, 16);
-      fitText(document.getElementById('agentPhone'),      27, 18, 165);
-    });
+    requestAnimationFrame(() => fitAllIn(document));
   }
 
   function toggleAgentList() {
@@ -862,6 +866,7 @@
       sidebar.style.display = 'none';
       main.classList.add('active');
       updateMobileScale();
+      fitAll();
     }
   }
 
@@ -1157,6 +1162,7 @@
 
     // ממתינים שה-browser יחשב layout על ה-clone
     await new Promise(r => setTimeout(r, 80));
+    fitAllIn(clone);
 
     try {
       const cloneRect = clone.getBoundingClientRect();
