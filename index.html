@@ -705,22 +705,17 @@
       <h2 id="hDetails"><span class="num">3.</span> פרטי הנכס</h2>
       <div class="fields">
         <label class="field wide">כותרת — סוג הנכס
-          <textarea id="propType" rows="2" placeholder="קוטג׳ 5 חדרים...">קוטג׳ X חדרים
-ענק XXX מ״ר</textarea>
+          <textarea id="propType" rows="2" placeholder="לדוגמה: קוטג׳ 5 חדרים&#10;ענק 180 מ״ר"></textarea>
         </label>
         <label class="field">מיקום
-          <input id="propLocation" type="text" value="בשכונה" placeholder="בפסגת זאב..."/>
+          <input id="propLocation" type="text" value="" placeholder="לדוגמה: בפסגת זאב"/>
         </label>
         <label class="field">שורת משנה
-          <input id="propSub" type="text" value="ב-X מפלסים" placeholder="ב-3 מפלסים..."/>
+          <input id="propSub" type="text" value="" placeholder="לדוגמה: ב-3 מפלסים"/>
         </label>
         <label class="field wide">יתרונות
           <span class="help">שורה אחת לכל יתרון</span>
-          <textarea id="propInfo" rows="5" placeholder="גינה, ממ״ד, חניה...">גינה היקפית XXX מ״ר
-יחידת דיור מניבה
-ממ״ד
-יחידת הורים
-חניות מקורות</textarea>
+          <textarea id="propInfo" rows="5" placeholder="לדוגמה:&#10;גינה היקפית 100 מ״ר&#10;ממ״ד&#10;חניה מקורה"></textarea>
         </label>
         <label class="field">מחיר
           <span class="price-box">
@@ -781,10 +776,9 @@
           <div class="ad-panel-red"><div class="ad-panel-bg"></div></div>
           <div class="ad-panel-deco"></div>
           <div id="badgeWrap" class="ad-brush ad-brush-lg"><div class="ad-brush-bg"></div><span id="badgeText">חדש למכירה!</span></div>
-          <div id="displayType" class="ad-title">קוטג׳ X חדרים
-ענק XXX מ״ר</div>
-          <div id="locationWrap" class="ad-brush ad-brush-md"><div class="ad-brush-bg"></div><span id="displayLocation">בשכונה</span></div>
-          <div id="displaySub" class="ad-sub">ב-X מפלסים</div>
+          <div id="displayType" class="ad-title">סוג הנכס</div>
+          <div id="locationWrap" class="ad-brush ad-brush-md" style="display:none"><div class="ad-brush-bg"></div><span id="displayLocation"></span></div>
+          <div id="displaySub" class="ad-sub" style="display:none"></div>
           <div class="ad-divider"></div>
           <div id="displayInfo" class="ad-features"></div>
           <div id="priceWrap" class="ad-price-wrap" style="display:none">
@@ -1406,6 +1400,17 @@
       const price = document.getElementById('propPrice');
       price.value = price.value.replace(/\s*(ש["״']?ח|₪)\s*$/, '');
       if (/X,XXX/.test(price.value)) price.value = '';   // ערך דוגמה ישן
+      // טיוטות ישנות שמרו את טקסט הדוגמה שהיה בשדות — מנקים אותו
+      const OLD_SAMPLES = {
+        propType:     'קוטג׳ X חדרים\nענק XXX מ״ר',
+        propLocation: 'בשכונה',
+        propSub:      'ב-X מפלסים',
+        propInfo:     'גינה היקפית XXX מ״ר\nיחידת דיור מניבה\nממ״ד\nיחידת הורים\nחניות מקורות',
+      };
+      for (const [id, sample] of Object.entries(OLD_SAMPLES)) {
+        const el = document.getElementById(id);
+        if (el.value.trim() === sample) el.value = '';
+      }
       addPriceCommas(price);
       if (d.bannerValue !== undefined) {
         const isCustom = d.bannerValue && !document.querySelector(`.banner-btn[data-value="${CSS.escape(d.bannerValue)}"]`);
