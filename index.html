@@ -724,10 +724,10 @@
         </label>
         <label class="field">מחיר
           <span class="price-box">
-            <input id="propPrice" type="text" value="X,XXX,XXX" placeholder="4290000" autocomplete="off"/>
+            <input id="propPrice" type="text" value="" placeholder="4,290,000" inputmode="numeric" autocomplete="off"/>
             <span class="cur" aria-hidden="true">₪</span>
           </span>
-          <span class="help">אפשר לכתוב רק מספר — הפסיקים ו״ש״ח״ יתווספו במודעה</span>
+          <span class="help">כותבים רק מספר — הפסיקים יתווספו אוטומטית, ו״ש״ח״ יופיע במודעה</span>
         </label>
       </div>
     </section>
@@ -787,8 +787,8 @@
           <div id="displaySub" class="ad-sub">ב-X מפלסים</div>
           <div class="ad-divider"></div>
           <div id="displayInfo" class="ad-features"></div>
-          <div class="ad-price-wrap">
-            <div class="ad-brush"><div class="ad-brush-bg"></div><span><span class="ad-price-label">מחיר:</span><span id="displayPrice" class="ad-price">X,XXX,XXX ש״ח</span></span></div>
+          <div id="priceWrap" class="ad-price-wrap" style="display:none">
+            <div class="ad-brush"><div class="ad-brush-bg"></div><span><span class="ad-price-label">מחיר:</span><span id="displayPrice" class="ad-price"></span></span></div>
           </div>
         </div>
       </div>
@@ -1141,12 +1141,29 @@
     return (hasCurrency || hasHebrew) ? v : v + ' ש״ח';
   }
 
+  // מוסיף פסיקים למספר בשדה המחיר תוך כדי הקלדה (רק כשיש בשדה ספרות ופסיקים בלבד),
+  // ושומר את מיקום הסמן ביחס לספרות
+  function addPriceCommas(input) {
+    const v = input.value;
+    if (!/^[\d,]*$/.test(v)) return;
+    const caret = input.selectionStart ?? v.length;
+    const digitsBefore = v.slice(0, caret).replace(/,/g, '').length;
+    const digits = v.replace(/,/g, '').replace(/^0+(?=\d)/, '');
+    const formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (formatted === v) return;
+    input.value = formatted;
+    if (document.activeElement !== input) return;
+    let pos = 0, seen = 0;
+    while (pos < formatted.length && seen < digitsBefore) { if (formatted[pos] !== ',') seen++; pos++; }
+    input.setSelectionRange(pos, pos);
+  }
+
   // ── שדות טקסט → תצוגה ──
   const TEXT_FIELDS = [
     { input: 'propType',     display: 'displayType',     fallback: 'סוג הנכס' },
     { input: 'propLocation', display: 'displayLocation', fallback: '', wrap: 'locationWrap' },
     { input: 'propSub',      display: 'displaySub',      fallback: '' },
-    { input: 'propPrice',    display: 'displayPrice',    fallback: '' },
+    { input: 'propPrice',    display: 'displayPrice',    fallback: '', wrap: 'priceWrap' },
   ];
 
   function renderTextField({ input, display, fallback, wrap }) {
@@ -1319,6 +1336,7 @@
   // ── Live preview + Auto-Save ──
   TEXT_FIELDS.forEach(field => {
     document.getElementById(field.input).addEventListener('input', e => {
+      if (field.input === 'propPrice') addPriceCommas(e.target);
       renderTextField(field);
       fitAll();
       if (e.target.value.trim()) e.target.classList.remove('field-error');
@@ -1387,6 +1405,8 @@
       // טיוטות ישנות שמרו "ש״ח" בתוך שדה המחיר — הסימן ₪ כבר מופיע ליד השדה
       const price = document.getElementById('propPrice');
       price.value = price.value.replace(/\s*(ש["״']?ח|₪)\s*$/, '');
+      if (/X,XXX/.test(price.value)) price.value = '';   // ערך דוגמה ישן
+      addPriceCommas(price);
       if (d.bannerValue !== undefined) {
         const isCustom = d.bannerValue && !document.querySelector(`.banner-btn[data-value="${CSS.escape(d.bannerValue)}"]`);
         if (isCustom) document.getElementById('bannerCustom').value = d.bannerValue;
