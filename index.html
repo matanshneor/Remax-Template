@@ -1251,6 +1251,7 @@
     buildAgentList();
     selectAgent(0, true);
     loadFromStorage();
+    loadFromLink();
     renderAll();
     if (!document.querySelector('.banner-btn.active')) setBanner('חדש למכירה!');
     updateSteps();
@@ -1421,6 +1422,34 @@
     } catch (e) {
       try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
     }
+  }
+
+  // ── פרטי נכס שהגיעו מה-CRM ──
+  // כפתור "יצירת מודעה" בכרטיס הנכס פותח את הכלי עם הפרטים אחרי ה-#:
+  // type, location, sub, info, price, agent (טלפון הסוכן), img (כתובת תמונה — עד 3, לפי הסדר)
+  function loadFromLink() {
+    const p = new URLSearchParams(location.hash.slice(1));
+    if (![...p.keys()].length) return;
+    // רענון הדף ימשיך מהטיוטה השמורה, לא יטען שוב את הקישור
+    history.replaceState(null, '', location.pathname + location.search);
+
+    const FIELDS = { type: 'propType', location: 'propLocation', sub: 'propSub', info: 'propInfo', price: 'propPrice' };
+    for (const [key, id] of Object.entries(FIELDS)) document.getElementById(id).value = p.get(key) || '';
+    addPriceCommas(document.getElementById('propPrice'));
+
+    const phoneKey = v => String(v || '').replace(/\D/g, '').slice(-9);
+    const wanted = phoneKey(p.get('agent'));
+    const agentIdx = wanted ? AGENTS.findIndex(a => phoneKey(a.phone) === wanted) : -1;
+    if (agentIdx >= 0) selectAgent(agentIdx);
+
+    SLOT_IDS.forEach(i => clearSlot(null, i));
+    p.getAll('img').filter(url => url.startsWith('https://')).slice(0, SLOT_IDS.length).forEach((url, i) => {
+      fetch(url)
+        .then(r => (r.ok ? r.blob() : Promise.reject()))
+        .then(blob => loadImageFromFile(i, blob))
+        .catch(() => showStatus('לא הצלחנו לטעון תמונה מה-CRM — אפשר לבחור אותה מהמחשב', true));
+    });
+    saveToStorage();
   }
 
   // ── Reset all ──
